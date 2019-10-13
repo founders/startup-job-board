@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from .config import ROOT_SQL_PASS
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,9 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'board',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -48,6 +53,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://localhost:8080',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -83,7 +94,7 @@ if os.getenv('GAE_APPLICATION', None):
             'ENGINE': 'django.db.backends.mysql',
             'HOST': '/cloudsql/startup-job-board:us-central1:job-board-db',
             'USER': 'root',
-            'PASSWORD': os.environ.get('SQLROOT'),
+            'PASSWORD': ROOT_SQL_PASS,
             'NAME': 'test',
         }
     }
@@ -101,7 +112,7 @@ else:
             'PORT': '3306',
             'NAME': 'test',
             'USER': 'root',
-            'PASSWORD': os.environ.get('SQLROOT'),
+            'PASSWORD': ROOT_SQL_PASS,
         }
     }
 # [END db_setup]

@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.urls import include, path
+
+import board.endpoints as endpoints
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    path('api/', include(endpoints))
 ]
