@@ -1,25 +1,59 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+"""
+API Testing for Users, Startups and Listings
+"""
 
 from django.test import TestCase
-from .models import User
+import requests
+import random
+import json
+from .models import User, Startup, Listing
 
-# class UserModelTest(TestCase):
-#
-#     @classmethod
-#
-#     def setUpTestData(cls):
-#         User.objects.create(name='Siraj Chokshi')
-#         User.objects.create(major="BCOG")
-#
-#     def test_name(self):
-#         user = User.objects.get(id=1)
-#         expect_name = f'{user.name}'
-#         self.assertEqual(expect_name, "Siraj Chokshi")
-#
-#     def test_major(self):
-#         user = User.objects.get(id=2)
-#         expect_major = f'{user.major}'
-#         self.assertEqual(expect_major, "BCOG")
+urlUser = "127.0.0.1:8000/api/users/"
 
-# Create your tests here.
+class TestUserAPI(TestCase):
+    @classmethod
+
+    def setUp(cls):
+        fnames = ["Davis", "Siraj", "Bobby", "Jordan"]
+        lnames = ["Keene", "Chokshi", "Wang", "Campbell"]
+        dobs = ["10-01-2000", "01-01-2000", "03-05-2001", "10-05-1997"]
+        majors = ["CS", "BCOG", "CS", "Econ"]
+        GPA = "4.0"
+        Degree = "B.S"
+        pitch = ["This is a test pitch."]
+        extraCurriculars = [
+            ["Yoyoing", "Tennis", "Programming"],
+            ["Design", "Legos"],
+            ["Money", "Computers", "Dropping Classes"],
+            []
+
+        ]
+        bookmarks = [
+            [],
+            ["Apple, Inc."],
+            ["Sentry.io", "Cruise"],
+            ["Applebees", "Five Guys", "Wendys", "McDonalds"]
+        ]
+        for i in range(4):
+            User.objects.create(firstName = fnames[i],
+                                lastName = lnames[i],
+                                dateOfBirth = dobs[i],
+                                authToken = str(random.randint(1234567890, 98765432100)),
+                                userMajor = majors[i],
+                                userGPA = GPA,
+                                userDegree = Degree,
+                                userPassword = str(random.randint(123456789, 9876543200)),
+                                userPitch = pitch,
+                                extraCurriculars = extraCurriculars[i],
+                                userBookmarks = bookmarks[i])
+
+    def test_types(self):
+        # check to see if all of our data went through
+        allDataCount = User.objects.count()
+        self.assertEqual(allDataCount, 4)
+
+    def test_names(self):
+        self.assertEqual(User.objects.get(id=1).firstName, "Davis")
+        self.assertEqual(User.objects.get(id=2).firstName, "Siraj")
+        self.assertEqual(User.objects.get(id=3).firstName, "Bobby")
+        self.assertEqual(User.objects.get(id=4).firstName, "Jordan")

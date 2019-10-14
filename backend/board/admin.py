@@ -5,7 +5,6 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import User, Startup, Listing
-#Startup, Listing
 
 admin.site.register(User)
 admin.site.register(Startup)

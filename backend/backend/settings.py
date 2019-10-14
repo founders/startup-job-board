@@ -26,7 +26,7 @@ SECRET_KEY = 'ucyylx8*rm^y)pfld99dwj_&o7rfk_o@*2tslx!(5pdtt-k4iw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -95,7 +95,7 @@ if os.getenv('GAE_APPLICATION', None):
             'HOST': '/cloudsql/startup-job-board:us-central1:job-board-db',
             'USER': 'dev',
             'PASSWORD': ROOT_SQL_PASS,
-            'NAME': 'test',
+            'NAME': 'dev',
         }
     }
 else:

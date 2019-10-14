@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django_mysql.models import JSONField
+from django.contrib import admin
 from django import forms
 import datetime
 
@@ -17,8 +19,8 @@ class User(models.Model):
     userDegree = models.CharField(max_length=100)
     userPassword = models.CharField(max_length=100)
     userPitch = models.CharField(max_length=300)
-    extraCurriculars = []
-    userBookmarks = []
+    extraCurriculars = JSONField(default=dict)
+    userBookmarks = JSONField(default=dict)
 
     def __str__(self):
         """A string representation of a User"""
@@ -26,22 +28,6 @@ class User(models.Model):
 
     def addBookmark(self, listing):
         self.userBookmarks.append(listing)
-
-class Startup(models.Model):
-    orgName = models.CharField(max_length=50)
-    orgLocation = models.CharField(max_length=100)
-    orgListings = []
-    orgDesc = models.CharField(max_length=300)
-    orgIndustry = models.CharField(max_length=100)
-    authToken = models.CharField(max_length=100, default="")
-    orgPassword = models.CharField(max_length=100, default="")
-
-    def __str__(self):
-        """A string representation of a Startup"""
-        return str(self.orgName) + " is a " + str(self.orgIndustry) + " company."
-
-    def addListing(self, listing):
-        self.orgListings.append(listing)
 
 class Listing(models.Model):
     listName = models.CharField(max_length=50)
@@ -60,3 +46,19 @@ class Listing(models.Model):
     def setIsPaid(self, boolean):
         self.isPaid = boolean
         super(Listing, self).save()
+
+class Startup(models.Model):
+    orgName = models.CharField(max_length=50)
+    orgLocation = models.CharField(max_length=100)
+    orgListings = JSONField(default=dict)
+    orgDesc = models.CharField(max_length=300)
+    orgIndustry = models.CharField(max_length=100)
+    authToken = models.CharField(max_length=100, default="")
+    orgPassword = models.CharField(max_length=100, default="")
+
+    def __str__(self):
+        """A string representation of a Startup"""
+        return str(self.orgName) + " is a " + str(self.orgIndustry) + " company."
+
+    def addListing(self, listing):
+        self.orgListings.append(listing)
