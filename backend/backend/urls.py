@@ -21,5 +21,5 @@ import board.endpoints as endpoints
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    path('api/', include(endpoints))
+    path('api/', include(endpoints)),
 ]

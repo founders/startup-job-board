@@ -93,7 +93,7 @@ if os.getenv('GAE_APPLICATION', None):
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'HOST': '/cloudsql/startup-job-board:us-central1:job-board-db',
-            'USER': 'root',
+            'USER': 'dev',
             'PASSWORD': ROOT_SQL_PASS,
             'NAME': 'test',
         }
@@ -110,7 +110,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'HOST': '127.0.0.1',
             'PORT': '3306',
-            'NAME': 'test',
+            'NAME': 'dev',
             'USER': 'root',
             'PASSWORD': ROOT_SQL_PASS,
         }
