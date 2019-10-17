@@ -9,3 +9,10 @@ from .models import User, Startup, Listing
 admin.site.register(User)
 admin.site.register(Startup)
 admin.site.register(Listing)
+
+"""
+
+Generated token 0182c0ee92d7be9612001a1d1b3dbc4cd37c3c9b for user foundersadmin
+
+
+"""

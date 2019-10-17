@@ -57,3 +57,4 @@ class TestUserAPI(TestCase):
         self.assertEqual(User.objects.get(id=2).firstName, "Siraj")
         self.assertEqual(User.objects.get(id=3).firstName, "Bobby")
         self.assertEqual(User.objects.get(id=4).firstName, "Jordan")
+

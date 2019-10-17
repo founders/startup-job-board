@@ -5,6 +5,8 @@ from . import views
 from rest_framework import routers
 from .views import UserViewSet, StartupViewSet, ListingViewSet
 
+#from rest_framework.authtoken.views import obtain_auth_token  # <-- Here
+
 router = routers.DefaultRouter()
 router.register('users', UserViewSet)
 router.register('startups', StartupViewSet)
@@ -17,5 +19,7 @@ urlpatterns = [
     path('startups/', views.ListStartup.as_view()),
     path('startups/<int:pk>/', views.DetailStartup.as_view()),
     path('listings/', views.ListListing.as_view()),
-    path('listings/<int:pk>/', views.DetailListing.as_view())
+    path('listings/<int:pk>/', views.DetailListing.as_view()),
+    #path('auth/api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    # path('auth/login', views.login)
 ]
