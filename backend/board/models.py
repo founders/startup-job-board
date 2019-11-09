@@ -9,7 +9,7 @@ import datetime
 
 # Create your models here.
 
-class User(models.Model):
+class CustomUser(models.Model):
     firstName = models.CharField(max_length=50)
     lastName = models.CharField(max_length=50)
     dateOfBirth = models.CharField(max_length=50)
@@ -31,7 +31,7 @@ class User(models.Model):
 
 class Listing(models.Model):
     listName = models.CharField(max_length=50)
-    listTag = models.CharField(max_length=50)
+    listCategory = models.CharField(max_length=50)
     listDesc = models.CharField(max_length=250)
     isPaid = models.BooleanField(default= True)
     listLocation = models.CharField(max_length=100)

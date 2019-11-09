@@ -6,7 +6,7 @@ from django.test import TestCase
 import requests
 import random
 import json
-from .models import User, Startup, Listing
+from .models import CustomUser, Startup, Listing
 
 urlUser = "127.0.0.1:8000/api/users/"
 
@@ -35,26 +35,26 @@ class TestUserAPI(TestCase):
             ["Applebees", "Five Guys", "Wendys", "McDonalds"]
         ]
         for i in range(4):
-            User.objects.create(firstName = fnames[i],
-                                lastName = lnames[i],
-                                dateOfBirth = dobs[i],
-                                authToken = str(random.randint(1234567890, 98765432100)),
-                                userMajor = majors[i],
-                                userGPA = GPA,
-                                userDegree = Degree,
-                                userPassword = str(random.randint(123456789, 9876543200)),
-                                userPitch = pitch,
-                                extraCurriculars = extraCurriculars[i],
-                                userBookmarks = bookmarks[i])
+            CustomUser.objects.create(firstName = fnames[i],
+                                      lastName = lnames[i],
+                                      dateOfBirth = dobs[i],
+                                      authToken = str(random.randint(1234567890, 98765432100)),
+                                      userMajor = majors[i],
+                                      userGPA = GPA,
+                                      userDegree = Degree,
+                                      userPassword = str(random.randint(123456789, 9876543200)),
+                                      userPitch = pitch,
+                                      extraCurriculars = extraCurriculars[i],
+                                      userBookmarks = bookmarks[i])
 
     def test_types(self):
         # check to see if all of our data went through
-        allDataCount = User.objects.count()
+        allDataCount = CustomUser.objects.count()
         self.assertEqual(allDataCount, 4)
 
     def test_names(self):
-        self.assertEqual(User.objects.get(id=1).firstName, "Davis")
-        self.assertEqual(User.objects.get(id=2).firstName, "Siraj")
-        self.assertEqual(User.objects.get(id=3).firstName, "Bobby")
-        self.assertEqual(User.objects.get(id=4).firstName, "Jordan")
+        self.assertEqual(CustomUser.objects.get(id=1).firstName, "Davis")
+        self.assertEqual(CustomUser.objects.get(id=2).firstName, "Siraj")
+        self.assertEqual(CustomUser.objects.get(id=3).firstName, "Bobby")
+        self.assertEqual(CustomUser.objects.get(id=4).firstName, "Jordan")
 
