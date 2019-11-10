@@ -25,9 +25,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
         #     'userBookmarks'
         # )
         fields = '__all__'
-        extra_kwargs = {
-            'userPassword': {'write_only': True},
-        }
+        #extra_kwargs = {
+        #    'userPassword': {'write_only': True},
+        #}
         model = CustomUser
 
 class StartupSerializer(serializers.ModelSerializer):
@@ -43,9 +43,9 @@ class StartupSerializer(serializers.ModelSerializer):
         #     'orgPassword'
         # )
         fields = '__all__'
-        extra_kwargs = {
-            'orgPassword' : {'write_only' : True},
-        }
+        #extra_kwargs = {
+        #    'orgPassword' : {'write_only' : True},
+        #}
         model = Startup
 
 class ListingSerializer(serializers.ModelSerializer):

@@ -12,12 +12,13 @@ import datetime
 class CustomUser(models.Model):
     firstName = models.CharField(max_length=50)
     lastName = models.CharField(max_length=50)
+    email = models.CharField(max_length=50, default="")
     dateOfBirth = models.CharField(max_length=50)
     authToken = models.CharField(max_length=100)
     userMajor = models.CharField(max_length=100)
     userGPA = models.CharField(max_length=10)
     userDegree = models.CharField(max_length=100)
-    userPassword = models.CharField(max_length=100)
+    # userPassword = models.CharField(max_length=100)
     userPitch = models.CharField(max_length=300)
     extraCurriculars = JSONField(default=dict)
     userBookmarks = JSONField(default=dict)
@@ -54,7 +55,7 @@ class Startup(models.Model):
     orgDesc = models.CharField(max_length=300)
     orgIndustry = models.CharField(max_length=100)
     authToken = models.CharField(max_length=100, default="")
-    orgPassword = models.CharField(max_length=100, default="")
+    # orgPassword = models.CharField(max_length=100, default="")
 
     def __str__(self):
         """A string representation of a Startup"""
