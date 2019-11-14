@@ -22,7 +22,7 @@ class CustomUser(models.Model):
     lastName = models.CharField(max_length=50)
     email = models.CharField(max_length=50, default="")
     dateOfBirth = models.CharField(max_length=50)
-    authToken = models.CharField(max_length=100)
+    # authToken = models.CharField(max_length=100)
     userMajor = models.CharField(max_length=100)
     userGPA = models.CharField(max_length=10)
     userDegree = models.CharField(max_length=100)
