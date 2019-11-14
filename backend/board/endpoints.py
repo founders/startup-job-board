@@ -22,6 +22,7 @@ urlpatterns = [
     path('startups/<int:pk>/', views.DetailStartup.as_view()),
     path('listings/', views.ListListing.as_view()),
     path('listings/<int:pk>/', views.DetailListing.as_view()),
+path('listings/<int:pk>/toggle/', views.ToggleListingToUser.as_view()),
     #path('auth/api-token-auth/', obtain_auth_token, name='api_token_auth'),
     # path('auth/login', views.login)
 ]

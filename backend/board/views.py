@@ -12,6 +12,8 @@ from rest_framework.response import Response
 from .models import CustomUser, Startup, Listing
 from django.contrib.auth.models import User
 from .serializers import CustomUserSerializer, StartupSerializer, ListingSerializer, UserSerializer
+import json
+import itertools
 
 # Create your views here.
 
@@ -29,6 +31,45 @@ class IsOwnerOrReadOnly(BasePermission):
             return bool(view.kwargs['pk'] == CustomUser.objects.get(email=request.user.email).id)
         except:
             return False
+
+class IsAbleToAdd(BasePermission):
+    """
+    Bad implementation but it works okay
+    """
+    message = 'User already has listing bookmarked, or internal error.'
+
+    def has_permission(self, request, view):
+        try:
+            temp_user = CustomUser.objects.get(email=request.user.email)
+            listing_index = view.kwargs['pk']
+            # Check for conversion to string
+            if isinstance(temp_user.userBookmarks, str):
+                temp_user.userBookmarks = {}
+                temp_user.save()
+            if not temp_user.userBookmarks.get('listings'):
+                temp_user.userBookmarks['listings'] = "|{}|".format(listing_index)
+                temp_user.save()
+                return True
+            else:
+                # Check if the listing is valid
+                if (Listing.objects.filter(id=listing_index).exists()):
+                    if str(listing_index) in temp_user.userBookmarks['listings']:
+                        # If if already exists, remove it from the list
+                        temp_str = temp_user.userBookmarks['listings'].replace(str(listing_index), '')
+                        # print(temp_str)
+                        temp_str = ''.join(i for i, _ in itertools.groupby(temp_str))
+                        temp_user.userBookmarks['listings'] = temp_str
+                        temp_user.save()
+                        # print(temp_user.userBookmarks)
+                        return True
+                    temp_user.userBookmarks['listings'] = temp_user.userBookmarks['listings'] + str("{}|".format(listing_index))
+                    temp_user.save()
+                    return True
+                return False
+        except Exception as e:
+            print(e)
+            return False
+
 
 """
 User API
@@ -89,6 +130,15 @@ class ListListing(generics.ListAPIView):
 class DetailListing(generics.RetrieveUpdateDestroyAPIView):
     queryset = Listing.objects.all()
     serializer_class = ListingSerializer
+
+class ToggleListingToUser(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated,
+                          IsAbleToAdd]
+
+    def post(self, request, *args, **kwargs):
+        return Response({"status" : "okay",
+                         "listing_toggled": kwargs['pk']})
+
 
 class ListingUpdateView(generics.UpdateAPIView):
     queryset = Listing.objects.all()
