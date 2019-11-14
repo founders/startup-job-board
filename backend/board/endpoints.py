@@ -16,6 +16,7 @@ urlpatterns = [
     url("^", include(router.urls)),
     path('users/', views.ListUser.as_view()),
     path('users/<int:pk>/', views.DetailUser.as_view()),
+    path('users/<int:pk>/update', views.UpdateUser.as_view()),
     path('authusers/', views.ListAuthUser.as_view()),
     path('startups/', views.ListStartup.as_view()),
     path('startups/<int:pk>/', views.DetailStartup.as_view()),

@@ -6,6 +6,14 @@ from django_mysql.models import JSONField
 from django.contrib import admin
 from django import forms
 import datetime
+import calendar
+
+def addOneMonth(sourcedate, months):
+    month = sourcedate.month - 1 + months
+    year = sourcedate.year + month // 12
+    month = month % 12 + 1
+    day = min(sourcedate.day, calendar.monthrange(year, month)[1])
+    return str(datetime.date(year, month, day))[:10]
 
 # Create your models here.
 
@@ -34,6 +42,7 @@ class Listing(models.Model):
     listName = models.CharField(max_length=50)
     listCategory = models.CharField(max_length=50)
     listDesc = models.CharField(max_length=250)
+    listDeadline = models.CharField(max_length=10, default=addOneMonth(datetime.datetime.today(), 1))
     isPaid = models.BooleanField(default= True)
     listLocation = models.CharField(max_length=100)
     isOpen = models.BooleanField(default= True)
@@ -47,6 +56,11 @@ class Listing(models.Model):
     def setIsPaid(self, boolean):
         self.isPaid = boolean
         super(Listing, self).save()
+
+    def getIsOpen(self):
+        if (datetime.datetime.strptime(self.listDeadline, '%Y-%m-%d') < datetime.datetime.today()):
+            return False
+        return True
 
 class Startup(models.Model):
     orgName = models.CharField(max_length=50)
