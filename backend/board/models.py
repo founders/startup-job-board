@@ -76,7 +76,7 @@ class Startup(models.Model):
     orgListings = JSONField(default=dict)
     orgDesc = models.CharField(max_length=300)
     orgIndustry = models.CharField(max_length=100)
-    authToken = models.CharField(max_length=100, default="")
+    # authToken = models.CharField(max_length=100, default="")
     orgEmail = models.CharField(max_length=50, default="")
     # orgPassword = models.CharField(max_length=100, default="")
 
