@@ -16,7 +16,7 @@ python3 manage.py runserver
 Assuming everything goes well, you should see the server up and running on
 localhost:8000
 
-##Endpoints
+## Endpoints
 This API currently has three endpoints:
 /api/users, /api/startups, and /api/listings
 
@@ -87,38 +87,38 @@ data = {
     under board/models.py)
 }
 ```
-##Public User Endpoints
-####api/users/
+## Public User Endpoints
+#### api/users/
 Gives a list of all users.
 
 Method: GET
 
 Permissions: AllowAny (dev), IsSuperUser (prod)
 
-####api/users/[id]/
+#### api/users/[id]/
 Returns user information with specific id.
 
 Method: GET
 
 Permissions: AllowAny (dev), IsSuperUser (prod)
 
-##Public Startup Endpoints
-####api/startups/
+## Public Startup Endpoints
+#### api/startups/
 Gives a list of all startups.
 
 Method: GET
 
 Permissions: AllowAny (dev), IsSuperUser (prod)
 
-####api/startups/[id]
+#### api/startups/[id]
 Returns startup information given startup id.
 
 Method: GET
 
 Permissions: AllowAny (dev), IsSuperUser (prod)
 
-##Public Listing Endpoints
-####api/listings/
+## Public Listing Endpoints
+#### api/listings/
 Gives a list of all job listings.
 
 Method: GET
@@ -132,67 +132,67 @@ Searching: `/api/listings/?search=Business`
 
 Filtering: `/api/listings/?isPaid=true`
 
-####api/listings/[id]/
+#### api/listings/[id]/
 Returns job listing information given listing id.
 
 Method: GET
 
 Permissions: AllowAny (prod)
 
-####api/listings/[id]/toggle/
+#### api/listings/[id]/toggle/
 Toggles a listing as bookmarked or not given a user's token.
 
 Method: GET
 
 Permissions: IsAuthenticated (prod)
 
-####api/listings/[id]/applicants/
+#### api/listings/[id]/applicants/
 Returns a list of applicants given a job listing id.
 
 Method: GET
 
 Permissions: AllowAny (prod)
 
-####api/listings/sort/[sort-key]/
+#### api/listings/sort/[sort-key]/
 Returns a sorted list of job listings based on search key.
 
-##Authorization Endpoints (no slash at end)
-####api/auth/user
+## Authorization Endpoints (no slash at end)
+#### api/auth/user
 Returns a user's information given Token (CustomUser and Startups).
 
 Method: GET
 
 Permissions: IsAuthenticated
 
-####api/auth/register
+#### api/auth/register
 Registers a new authuser given username, email and password.
 
 Method: POST
 
 Permissions: AllowAny
 
-####api/auth/login
+#### api/auth/login
 Logs a user in given username (email) and password.
 
 Method: POST
 
 Permissions: AllowAny
 
-####api/auth/logout
+#### api/auth/logout
 Logs a user out given token (invalidates user token).
 
 Method: POST
 
 Permissions: IsAuthenticated
 
-####api/authusers/
+#### api/authusers/
 Returns a list of current authusers.
 
 Method: GET
 
 Permissions: IsSuperUser
 
-####api/authusers/confirm/
+#### api/authusers/confirm/
 Confirms if a user's password is valid.
 
 Method: POST
