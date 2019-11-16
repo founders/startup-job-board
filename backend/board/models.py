@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django_mysql.models import JSONField
+from django.contrib.auth.models import User
 from django.contrib import admin
 from django import forms
 import datetime
@@ -16,6 +17,9 @@ def addOneMonth(sourcedate, months):
     return str(datetime.date(year, month, day))[:10]
 
 # Create your models here.
+# class AuthUser(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     isStartup = models.BooleanField(default=False)
 
 class CustomUser(models.Model):
     firstName = models.CharField(max_length=50)
@@ -23,6 +27,7 @@ class CustomUser(models.Model):
     email = models.CharField(max_length=50, default="")
     dateOfBirth = models.CharField(max_length=50)
     # authToken = models.CharField(max_length=100)
+    userGradYear = models.IntegerField(default=(int(datetime.datetime.today().year) + 4))
     userMajor = models.CharField(max_length=100)
     userGPA = models.CharField(max_length=10)
     userDegree = models.CharField(max_length=100)
@@ -49,9 +54,12 @@ class Listing(models.Model):
     listLongDesc = models.TextField()
     listOrgID = models.CharField(max_length=100, default="")
 
+    class Meta:
+        ordering = ['-id']
+
     def __str__(self):
         """A string representation of a Job Listing"""
-        return str(self.listName) + " is a " + str(self.listTag) + " listing."
+        return str(self.listName) + ". " + str(self.listDesc)
 
     def setIsPaid(self, boolean):
         self.isPaid = boolean
@@ -69,6 +77,7 @@ class Startup(models.Model):
     orgDesc = models.CharField(max_length=300)
     orgIndustry = models.CharField(max_length=100)
     authToken = models.CharField(max_length=100, default="")
+    orgEmail = models.CharField(max_length=50, default="")
     # orgPassword = models.CharField(max_length=100, default="")
 
     def __str__(self):
