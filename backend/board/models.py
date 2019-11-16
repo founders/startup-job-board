@@ -33,7 +33,7 @@ class CustomUser(models.Model):
     userDegree = models.CharField(max_length=100)
     # userPassword = models.CharField(max_length=100)
     userPitch = models.CharField(max_length=300)
-    extraCurriculars = JSONField(default=dict)
+    extraCurriculars = models.CharField(max_length=60, default="")
     userBookmarks = JSONField(default=dict)
 
     def __str__(self):

@@ -46,4 +46,29 @@ data = {
 r = requests.post(url, headers=headers, data=json.dumps(data))
  
 ```
+# Docs
+[Creating Users](#creating-users)
 
+## Creating Users
+To create a new user, you first have to register them via the <i>registration</i> api.
+To register a user, send a request with the data in the following format:
+```angular2html
+email = "example@gmail.com"
+data = {
+    "username": email,
+    "email": email,
+    "password": "your-password"
+}
+```
+The following response should be in this format:
+```angular2html
+{
+    "user": {
+        "id": [user id],
+        "username": [user email]
+        "email": [also user email]
+    },
+    "token": "[user auth token]",
+    "is_startup": [Boolean, true if authuser is a startup.]
+}
+```
