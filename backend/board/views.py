@@ -162,8 +162,11 @@ class ToggleListingToUser(generics.GenericAPIView):
                           IsAbleToAdd]
 
     def post(self, request, *args, **kwargs):
+        user = CustomUser.objects.filter(email=request.user.email)[0]
+
         return Response({"status" : "okay",
-                         "listing_toggled": kwargs['pk']})
+                         "listingToggled": kwargs['pk'],
+                         "isBookmarked": bool(user.userBookmarks.get(str(kwargs['pk'])))})
 
 
 class ListingUpdateView(generics.UpdateAPIView):
