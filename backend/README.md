@@ -192,6 +192,13 @@ Method: POST
 
 Permissions: IsAuthenticated
 
+#### api/auth/users/bookmarks/
+Gets a query of Listing objects bookmarked by the user.
+
+Method: GET
+
+Permissions: IsAuthenticated
+
 #### api/authusers/
 Returns a list of current authusers.
 

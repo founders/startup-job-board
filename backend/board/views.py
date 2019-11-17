@@ -118,6 +118,18 @@ class ConfirmUserPassword(generics.GenericAPIView):
             "isValid": isValid
         })
 
+class GetUserBookmarks(generics.ListAPIView):
+    # serializer_class = ListingSerializer
+    serializer_class = ListingSerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def get_queryset(self):
+        user = CustomUser.objects.filter(email=self.request.user.email)[0]
+        bookmarked_ids = user.userBookmarks.keys()
+        queryset = Listing.objects.filter(id__in=bookmarked_ids)
+        return queryset
+
+
 class AuthUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     permission_classes = [permissions.IsAuthenticated, ]

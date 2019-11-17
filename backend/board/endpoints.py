@@ -15,6 +15,7 @@ router.register('listings', ListingViewSet)
 urlpatterns = [
     url("^", include(router.urls)),
     path('users/', views.ListUser.as_view()),  # View all current users
+    path('users/data/bookmarks/', views.GetUserBookmarks.as_view()),
     path('users/<int:pk>/', views.DetailUser.as_view()),  # Detail a user by their id
     path('users/<int:pk>/update/', views.UpdateUser.as_view()),  # Update user information
     path('authusers/', views.ListAuthUser.as_view()),  # View authenticated users

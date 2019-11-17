@@ -58,3 +58,13 @@ class UserAPI(generics.RetrieveAPIView):
         elif (Startup.objects.filter(orgEmail=self.request.user.email).count() > 0):
             return Startup.objects.get(orgEmail=self.request.user.email)
     # return self.request.user
+
+
+class GetUserBookmarks(generics.GenericAPIView):
+  serializer_class = ListingSerializer
+  permission_classes = [permissions.IsAuthenticated, ]
+
+  def get(self, request):
+    user = CustomUser.objects.filter(email=request.user.email)
+    bookmarked_ids = user.userBookmarks.keys()
+    return Listing.objects.filter(id__in=bookmarked_ids)
