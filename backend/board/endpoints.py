@@ -22,11 +22,13 @@ urlpatterns = [
     path('startups/<int:pk>/', views.DetailStartup.as_view()),  # View specific startups by id
     path('listings/', views.ListListing.as_view()),  # View all listings
     # path('listings/update/', views.UpdateListingsIsOpen.as_view()),
+    path('listings/manage/add/', views.ToggleListingFromStartup.as_view()),  # Create a job listing belonging to a startup
+    path('listings/manage/delete/', views.ToggleListingFromStartup.as_view()),  # Create a job listing belonging to a startup
     path('listings/<int:pk>/', views.DetailListing.as_view()),  # View specific listings by id
     path('listings/<int:pk>/toggle/', views.ToggleListingToUser.as_view()),  # Toggle listings for users to bookmark
-    path('listings/<int:pk>/applicants/', views.ViewUsersWhoApplied.as_view()),  # View applicants who applied to a position
+    path('listings/<int:pk>/bookmarks/', views.ViewUsersWhoApplied.as_view()),  # View applicants who applied to a position
     path('listings/sort/<str:order>/', views.ViewOrderedListings.as_view()),  # Sort listings by fields
-    path('authusers/confirm/', views.ConfirmUserPassword.as_view())
+    path('authusers/confirm/', views.ConfirmUserPassword.as_view()),  # confirm that a users password is valid
     #path('auth/api-token-auth/', obtain_auth_token, name='api_token_auth'),
     # path('auth/login', views.login)
 ]

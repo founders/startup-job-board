@@ -142,7 +142,7 @@ Permissions: AllowAny (prod)
 #### api/listings/[id]/toggle/
 Toggles a listing as bookmarked or not given a user's token.
 
-Method: GET
+Method: POST
 
 Permissions: IsAuthenticated (prod)
 

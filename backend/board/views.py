@@ -5,6 +5,10 @@ from django.shortcuts import render
 from rest_framework import generics, viewsets, permissions
 from rest_framework import filters
 from rest_framework.permissions import BasePermission
+# from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseNotFound
+# from rest_framework.exceptions import MethodNotAllowed, PermissionDenied, NotFound
+# from rest_framework.views import exception_handler
+from rest_framework import status
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
@@ -168,6 +172,52 @@ class ListingUpdateView(generics.UpdateAPIView):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
+
+class ToggleListingFromStartup(generics.GenericAPIView):
+    serializer_class = ListingSerializer
+    permission_classes = [permissions.IsAuthenticated,
+                          IsStartup]
+
+    def post(self, request, *args, **kwargs):
+        email = request.user.email
+        startup = Startup.objects.filter(orgEmail=email)[0]
+        # Add organization id to the request data
+        request.data['listOrgID'] = startup.id
+        # Serialize the listing
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        listing = serializer.save()
+        new_listing = ListingSerializer(listing, context=self.get_serializer_context()).data
+        # Save the listing to the startup
+        startup.orgListings[str(new_listing['id'])] = listing.listDesc
+        startup.save()
+
+        return Response({
+            "listing": new_listing
+        })
+
+    def delete(self, request):
+        try:
+            email = request.user.email
+            startup = Startup.objects.filter(orgEmail=email)[0]
+            listing = Listing.objects.filter(id=request.data['id'])[0]
+            new_listing = ListingSerializer(listing, context=self.get_serializer_context()).data
+            if startup.orgListings.get(str(request.data['id'])):  # If the listing belongs to the startup
+                del startup.orgListings[str(request.data['id'])]
+                startup.save()
+                listing.delete()
+
+                return Response({
+                    "listing": new_listing
+                })
+            else:
+                return Response({
+                    "message": "Listing does not belong to this startup!"
+                }, status=status.HTTP_401_UNAUTHORIZED)
+        except:
+            return Response({
+                "A listing with this ID does not exist!"
+            }, status=status.HTTP_404_NOT_FOUND)
 
 
 class ListingViewSet(viewsets.ModelViewSet):
