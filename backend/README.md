@@ -156,6 +156,13 @@ Permissions: AllowAny (prod)
 #### api/listings/sort/[sort-key]/
 Returns a sorted list of job listings based on search key.
 
+#### api/listings/manage/[add/delete]
+Adds or deletes a listing (for startups).
+
+Method: POST or DELETE (depending on add or delete)
+
+Permissions: IsAuthenticated, IsStartup (custom)
+
 ## Authorization Endpoints (no slash at end)
 #### api/auth/user
 Returns a user's information given Token (CustomUser and Startups).
