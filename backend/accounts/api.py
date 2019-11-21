@@ -67,3 +67,10 @@ class GetUserBookmarks(generics.GenericAPIView):
     user = CustomUser.objects.filter(email=request.user.email)
     bookmarked_ids = user.userBookmarks.keys()
     return Listing.objects.filter(id__in=bookmarked_ids)
+
+class LoadHome(generics.GenericAPIView):
+
+    def get(self, request):
+        return Response({
+            "status": 200
+        })
