@@ -2,7 +2,7 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from knox.models import AuthToken
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
-from board.models import CustomUser, Startup
+from board.models import CustomUser, Startup, Listing
 from board.serializers import CustomUserSerializer, ListingSerializer, StartupSerializer
 from django.contrib.auth.models import User
 
@@ -58,7 +58,6 @@ class UserAPI(generics.RetrieveAPIView):
         elif (Startup.objects.filter(orgEmail=self.request.user.email).count() > 0):
             return Startup.objects.get(orgEmail=self.request.user.email)
     # return self.request.user
-
 
 class GetUserBookmarks(generics.GenericAPIView):
   serializer_class = ListingSerializer

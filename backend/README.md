@@ -102,6 +102,13 @@ Method: GET
 
 Permissions: AllowAny (dev), IsSuperUser (prod)
 
+#### api/users/data/bookmarks/
+Gets a query of Listing objects bookmarked by the user.
+
+Method: GET
+
+Permissions: IsAuthenticated
+
 ## Public Startup Endpoints
 #### api/startups/
 Gives a list of all startups.
@@ -153,9 +160,6 @@ Method: GET
 
 Permissions: AllowAny (prod)
 
-#### api/listings/sort/[sort-key]/
-Returns a sorted list of job listings based on search key.
-
 #### api/listings/manage/[add/delete]
 Adds or deletes a listing (for startups).
 
@@ -192,13 +196,6 @@ Method: POST
 
 Permissions: IsAuthenticated
 
-#### api/auth/users/bookmarks/
-Gets a query of Listing objects bookmarked by the user.
-
-Method: GET
-
-Permissions: IsAuthenticated
-
 #### api/authusers/
 Returns a list of current authusers.
 
@@ -212,3 +209,49 @@ Confirms if a user's password is valid.
 Method: POST
 
 Permissions: IsAuthenticated
+
+## Sorting API Documentation
+Sorting is done using a filterset, a search set and an ordering set.
+
+#### Ordering a query
+Examples:
+```angular2html
+/api/users/?ordering=id
+# sorts users in ascending order by id.
+
+/api/users/?ordering=-userGPA
+# sorts users in descending order by GPA.
+
+/api/listings/?ordering=id
+# sorts listings in ascending order by id.
+```
+
+#### Filtering a query
+Examples:
+```angular2html
+/api/users/?userGPA__gte=3.5
+# Filters users who have a GPA greater than or equal to (gte) 3.5 .
+
+/api/users/?email=dbkeene.tsyc@gmail.com
+# Returns users who have this particular email (should only return one result).
+
+/api/users/?userGradYear__lte=2022
+# Returns users who have a graduation year less than or equal to (lte) 2022.
+```
+
+#### Searching a queryset
+Examples:
+```angular2html
+/api/listings/?search=Business
+# Returns a list of listings that contain the word Business.
+
+/api/users/?search=CS
+# Returns a list of users that have CS in them.
+```
+
+#### Putting it all together
+Examples of multiple filters:
+```angular2html
+/api/listings/?ordering=-listDeadline&isPaid=true
+# Returns a list of listings sorted in descending order by deadline and only paying positions.
+```

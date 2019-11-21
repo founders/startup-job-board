@@ -98,6 +98,13 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = CustomUserSerializer
 
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['firstName', 'lastName', 'userGradYear', 'userDegree', 'userMajor', 'email']
+    filterset_fields = {'id': ['gte', 'lte', 'exact'], 'firstName': [],
+                        'userGPA' : ['gte', 'lte'], 'lastName' : [],
+                        'userGradYear' : ['gte', 'lte'], 'userDegree' : [],
+                        'userMajor':[], 'email':[]}
+
 class UpdateUser(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
     permission_classes = [IsOwnerOrReadOnly]
@@ -239,7 +246,7 @@ class ListingViewSet(viewsets.ModelViewSet):
     queryset = Listing.objects.all()
     permission_classes = [permissions.AllowAny, ]
     serializer_class = ListingSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['listName', 'listOrgID', 'listDesc']
     filterset_fields = ['listCategory', 'isPaid', 'listName', 'listOrgID', 'listDesc']
 
@@ -253,11 +260,14 @@ class ViewUsersWhoApplied(generics.ListAPIView):
         # print(self.kwargs['pk'])
         return CustomUser.objects.filter(userBookmarks__has_key=str(self.kwargs['pk']))
 
-class ViewOrderedListings(generics.ListAPIView):
-    serializer_class = ListingSerializer
-
-    def get_queryset(self):
-        return Listing.objects.all().order_by(self.kwargs['order'])
+# class ViewOrderedListings(generics.ListAPIView):
+#     serializer_class = ListingSerializer
+#     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+#     search_fields = ['listName', 'listOrgID', 'listDesc']
+#     filterset_fields = ['listCategory', 'isPaid', 'listName', 'listOrgID', 'listDesc']
+#
+#     def get_queryset(self):
+#         return Listing.objects.all().order_by(self.kwargs['order'])
 
 # Sorting
 # class SortByKeyword(generics.ListAPIView):
