@@ -53,6 +53,7 @@ class Listing(models.Model):
     isOpen = models.BooleanField(default= True)
     listLongDesc = models.TextField()
     listOrgID = models.CharField(max_length=100, default="")
+    externalLink = models.CharField(max_length=100, default="")
 
     class Meta:
         ordering = ['-id']

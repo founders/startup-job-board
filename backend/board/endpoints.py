@@ -26,6 +26,7 @@ urlpatterns = [
     path('listings/manage/add/', views.ToggleListingFromStartup.as_view()),  # Create a job listing belonging to a startup
     path('listings/manage/delete/', views.ToggleListingFromStartup.as_view()),  # Create a job listing belonging to a startup
     path('listings/<int:pk>/', views.DetailListing.as_view()),  # View specific listings by id
+    path('listings/<int:pk>/update/', views.ListingUpdateView.as_view()),  # Update specific listing
     path('listings/<int:pk>/toggle/', views.ToggleListingToUser.as_view()),  # Toggle listings for users to bookmark
     path('listings/<int:pk>/bookmarks/', views.ViewUsersWhoApplied.as_view()),  # View applicants who applied to a position
     # path('listings/sort/<str:order>/', views.ViewOrderedListings.as_view()),  # Sort listings by fields

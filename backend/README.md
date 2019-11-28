@@ -146,6 +146,13 @@ Method: GET
 
 Permissions: AllowAny (prod)
 
+#### api/listings/[id]/update/
+Updates a particular listing
+
+Method: GET
+
+Permissions: IsAuthenticated, IsListingOwner
+
 #### api/listings/[id]/toggle/
 Toggles a listing as bookmarked or not given a user's token.
 

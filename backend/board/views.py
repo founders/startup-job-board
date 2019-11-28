@@ -40,7 +40,7 @@ class IsOwnerOrReadOnly(BasePermission):
 
 class IsAbleToAdd(BasePermission):
     """
-    Bad implementation but it works okay
+    Bad implementation but it works, okay?
     """
     message = "Listing ID is not valid."
 
@@ -81,6 +81,13 @@ class IsStartup(BasePermission):
     message = "User's email does not match with any email belonging to Start-ups."
     def has_permission(self, request, view):
         return bool(Startup.objects.filter(orgEmail = request.user.email).count() > 0)
+
+class IsListingOwner(BasePermission):
+    message = "User is not a startup, or does not have permission to access this job listing."
+    def has_permission(self, request, view):
+        email = request.user.email
+        startup = Startup.objects.filter(orgEmail=email)
+        return bool(str(view.kwargs['pk']) in startup[0].orgListings)
 
 """
 User API
@@ -165,12 +172,12 @@ class ListListing(generics.ListAPIView):
     queryset = Listing.objects.all()
     serializer_class = ListingSerializer
 
-class UpdateListingsIsOpen(generics.ListAPIView):
-    queryset = Listing.objects.all()
-    serializer_class = ListingSerializer
-    for listing in queryset:
-        listing.isOpen = listing.getIsOpen()
-        listing.save()
+# class UpdateListingsIsOpen(generics.ListAPIView):
+#     queryset = Listing.objects.all()
+#     serializer_class = ListingSerializer
+#     for listing in queryset:
+#         listing.isOpen = listing.getIsOpen()
+#         listing.save()
 
 class DetailListing(generics.RetrieveUpdateDestroyAPIView):
     queryset = Listing.objects.all()
@@ -193,6 +200,7 @@ class ListingUpdateView(generics.UpdateAPIView):
     serializer_class = ListingSerializer
     permission_classes = [
         permissions.IsAuthenticated,
+        IsListingOwner
     ]
 
 class ToggleListingFromStartup(generics.GenericAPIView):
@@ -215,8 +223,8 @@ class ToggleListingFromStartup(generics.GenericAPIView):
         startup.save()
 
         return Response({
-            "listing": new_listing
-        })
+            "listing": new_listing,
+        }, status=status.HTTP_200_OK)
 
     def delete(self, request):
         try:
@@ -259,19 +267,3 @@ class ViewUsersWhoApplied(generics.ListAPIView):
         # Return a queryset containing people who have a particular listings bookmarked
         # print(self.kwargs['pk'])
         return CustomUser.objects.filter(userBookmarks__has_key=str(self.kwargs['pk']))
-
-# class ViewOrderedListings(generics.ListAPIView):
-#     serializer_class = ListingSerializer
-#     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-#     search_fields = ['listName', 'listOrgID', 'listDesc']
-#     filterset_fields = ['listCategory', 'isPaid', 'listName', 'listOrgID', 'listDesc']
-#
-#     def get_queryset(self):
-#         return Listing.objects.all().order_by(self.kwargs['order'])
-
-# Sorting
-# class SortByKeyword(generics.ListAPIView):
-#     queryset = CustomUser.objects.all()
-#     serializer_class = ListingSerializer
-#     filter_backends = [filters.SearchFilter]
-#     search_fields = ['listName', 'listOrg', 'listDesc']

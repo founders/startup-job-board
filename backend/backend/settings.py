@@ -62,7 +62,7 @@ REST_FRAMEWORK = {
 #         'rest_framework.permissions.IsAuthenticated', )
 # }
 REST_KNOX = {
-    'TOKEN_TTL': timedelta(hours=1)
+    'TOKEN_TTL': timedelta(hours=10)
 }
 
 MIDDLEWARE = [
