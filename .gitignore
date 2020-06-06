@@ -1,0 +1,3 @@
+.idea/*
+cloud_sql_proxy
+backend/backend/config.py
